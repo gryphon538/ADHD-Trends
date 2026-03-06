@@ -25,7 +25,18 @@ pcc_coords = (0, -53, 26)
 def interpret_dataset() -> Any:
     """A method for sorting the data"""
 
-    excluded_dataset = adhd_dataset.phenotypic[adhd_dataset.phenotypic["adhd"] == 1]
+    query = 70
+
+    while query != 1 and query != 0:
+        query = int(input("Enter 1 for ADHD results and 0 for neurotypical ones. \n"))
+
+        if query == 1 or query == 0:
+            excluded_dataset = adhd_dataset.phenotypic[
+                adhd_dataset.phenotypic["adhd"] == query
+            ]
+
+        else:
+            print("That is not a valid input. Please try again.")
 
     filtered_dataset = excluded_dataset[
         [
