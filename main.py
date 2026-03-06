@@ -1,9 +1,9 @@
+from typing import Any
+
 import numpy as np
 
 from nilearn import datasets
-from nilearn.image import mean_img
-from nilearn.plotting import plot_epi, plot_roi, show, plot_stat_map
-from nilearn import image
+from nilearn.plotting import show
 from nilearn import plotting
 
 from nilearn.glm.first_level import (
@@ -12,7 +12,6 @@ from nilearn.glm.first_level import (
 )
 from nilearn.maskers import NiftiSpheresMasker
 
-from typing import Any
 
 import matplotlib.pyplot as plt
 
@@ -48,30 +47,14 @@ def interpret_dataset() -> Any:
             "dsm_iv_h_i",
             "conn_adhd",
             "conn_gi_tot",
+            "adhd",
         ]
     ]
-    # print(filtered_dataset)
-    # not much to go off here
 
     return filtered_dataset
 
 
-def visualize_data(filtered_dataset: Any) -> None:
-    """A method for visualizing the fMRI data"""
-
-    func_files = [adhd_dataset.func[i] for i in filtered_dataset.index]
-
-    for func_file in func_files:
-        plot_epi(mean_img(func_file))
-
-        show()
-
-    # plot_epi(mean_img(subject_zero))
-
-    # show()
-
-
-def glm_analysis(filtered_dataset: Any) -> None:
+def glm_analysis(x: int) -> None:
     """Analyzes the dataset info"""
 
     seed_masker = NiftiSpheresMasker(
@@ -85,7 +68,7 @@ def glm_analysis(filtered_dataset: Any) -> None:
         memory_level=1,
         verbose=1,
     )
-    seed_time_series = seed_masker.fit_transform(adhd_dataset.func[0])
+    seed_time_series = seed_masker.fit_transform(adhd_dataset.func[x])
 
     n_scans = seed_time_series.shape[0]
     frametimes = np.linspace(0, (n_scans - 1) * adhd_dataset.t_r, n_scans)
@@ -102,7 +85,7 @@ def glm_analysis(filtered_dataset: Any) -> None:
 
     first_level_model = FirstLevelModel(verbose=1)
     first_level_model = first_level_model.fit(
-        run_imgs=adhd_dataset.func[0], design_matrices=design_matrix
+        run_imgs=adhd_dataset.func[x], design_matrices=design_matrix
     )
 
     z_map = first_level_model.compute_contrast(
@@ -110,7 +93,7 @@ def glm_analysis(filtered_dataset: Any) -> None:
     )
 
     display = plotting.plot_stat_map(
-        z_map, threshold=3.0, title="Seed based GLM", cut_coords=pcc_coords
+        z_map, threshold=3.0, title=f"GLM for Subject {x}", cut_coords=pcc_coords
     )
     display.add_markers(marker_coords=[pcc_coords], marker_color="g", marker_size=300)
 
@@ -118,5 +101,6 @@ def glm_analysis(filtered_dataset: Any) -> None:
 
 
 filtered = interpret_dataset()
-# visualize_data(filtered)
-glm_analysis(filtered)
+
+for i in filtered.index:
+    glm_analysis(i)
