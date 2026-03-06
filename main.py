@@ -12,8 +12,6 @@ from nilearn.glm.first_level import (
 )
 from nilearn.maskers import NiftiSpheresMasker
 
-# import matplotlib.pyplot as plt
-
 adhd_dataset = datasets.fetch_adhd(
     n_subjects=40, data_dir=None, url=None, resume=True, verbose=1
 )
