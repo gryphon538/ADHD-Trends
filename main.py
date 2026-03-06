@@ -1,4 +1,20 @@
+import numpy as np
+
 from nilearn import datasets
+from nilearn.image import mean_img
+from nilearn.plotting import plot_epi, plot_roi, show, plot_stat_map
+from nilearn import image
+from nilearn import plotting
+
+from nilearn.glm.first_level import (
+    FirstLevelModel,
+    make_first_level_design_matrix,
+)
+from nilearn.maskers import NiftiSpheresMasker
+
+from typing import Any
+
+import matplotlib.pyplot as plt
 
 # import matplotlib.pyplot as plt
 
@@ -6,11 +22,12 @@ adhd_dataset = datasets.fetch_adhd(
     n_subjects=40, data_dir=None, url=None, resume=True, verbose=1
 )
 
+
 pcc_coords = (0, -53, 26)
 
 
-def interpret_dataset() -> None:
-    """stop yelling at me linter"""
+def interpret_dataset() -> Any:
+    """A method for sorting the data"""
 
     excluded_dataset = adhd_dataset.phenotypic[adhd_dataset.phenotypic["adhd"] == 1]
 
@@ -33,8 +50,73 @@ def interpret_dataset() -> None:
             "conn_gi_tot",
         ]
     ]
-    print(filtered_dataset)
-    # print(adhd_dataset.phenotypic.to_string())
+    # print(filtered_dataset)
+    # not much to go off here
+
+    return filtered_dataset
 
 
-interpret_dataset()
+def visualize_data(filtered_dataset: Any) -> None:
+    """A method for visualizing the fMRI data"""
+
+    func_files = [adhd_dataset.func[i] for i in filtered_dataset.index]
+
+    for func_file in func_files:
+        plot_epi(mean_img(func_file))
+
+        show()
+
+    # plot_epi(mean_img(subject_zero))
+
+    # show()
+
+
+def glm_analysis(filtered_dataset: Any) -> None:
+    """Analyzes the dataset info"""
+
+    seed_masker = NiftiSpheresMasker(
+        [pcc_coords],
+        radius=10,
+        detrend=True,
+        low_pass=0.1,
+        high_pass=0.01,
+        t_r=adhd_dataset.t_r,
+        memory="nilearn_cache",
+        memory_level=1,
+        verbose=1,
+    )
+    seed_time_series = seed_masker.fit_transform(adhd_dataset.func[0])
+
+    n_scans = seed_time_series.shape[0]
+    frametimes = np.linspace(0, (n_scans - 1) * adhd_dataset.t_r, n_scans)
+
+    design_matrix = make_first_level_design_matrix(
+        frametimes,
+        hrf_model="spm",
+        add_regs=seed_time_series,
+        add_reg_names=["pcc_seed"],
+    )
+
+    dmn_contrast = np.array([1] + [0] * (design_matrix.shape[1] - 1))
+    contrasts = {"seed_based_glm": dmn_contrast}
+
+    first_level_model = FirstLevelModel(verbose=1)
+    first_level_model = first_level_model.fit(
+        run_imgs=adhd_dataset.func[0], design_matrices=design_matrix
+    )
+
+    z_map = first_level_model.compute_contrast(
+        contrasts["seed_based_glm"], output_type="z_score"
+    )
+
+    display = plotting.plot_stat_map(
+        z_map, threshold=3.0, title="Seed based GLM", cut_coords=pcc_coords
+    )
+    display.add_markers(marker_coords=[pcc_coords], marker_color="g", marker_size=300)
+
+    show()
+
+
+filtered = interpret_dataset()
+# visualize_data(filtered)
+glm_analysis(filtered)

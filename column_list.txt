@@ -1,3 +1,69 @@
-list of names
+full list of column names and descriptions
 
 'Unnamed: 0', 'Subject', 'Rest.Scan', 'MeanFD', 'NumFD_greater_than_0.20', 'rootMeanSquareFD', 'FDquartile.top1.4thFD.', 'PercentFD_greater_than_0.20', 'MeanDVARS', 'MeanFD_Jenkinson', 'site', 'sibling_id', 'data_set', 'age', 'sex', 'handedness', 'full_2_iq', 'full_4_iq', 'viq', 'piq', 'iq_measure', 'tdc', 'adhd', 'adhd_inattentive', 'adhd_combined', 'adhd_subthreshold', 'diagnosis_using_cdis', 'notes', 'sess_1_anat_2', 'oppositional', 'cog_inatt', 'hyperac', 'anxious_shy', 'perfectionism', 'social_problems', 'psychosomatic', 'conn_adhd', 'restless_impulsive', 'emot_lability', 'conn_gi_tot', 'dsm_iv_inatt', 'dsm_iv_h_i', 'dsm_iv_tot', 'study', 'sess_1_rest_1', 'sess_1_rest_1_eyes', 'sess_1_rest_2', 'sess_1_rest_2_eyes', 'sess_1_rest_3', 'sess_1_rest_3_eyes', 'sess_1_rest_4', 'sess_1_rest_4_eyes', 'sess_1_rest_5', 'sess_1_rest_5_eyes', 'sess_1_rest_6', 'sess_1_rest_6_eyes', 'sess_1_anat_1', 'sess_1_which_anat', 'sess_2_rest_1', 'sess_2_rest_1_eyes', 'sess_2_rest_2', 'sess_2_rest_2_eyes', 'sess_2_anat_1', 'defacing_ok', 'defacing_notes'
+
+Unnamed: 0              - Row number, can be ignored
+Subject                 - Unique participant ID number
+Rest.Scan               - Which resting state scan the row refers to (e.g. rest_1)
+MeanFD                  - Average head movement per frame in mm, main data quality metric
+NumFD_greater_than_0.20 - Number of frames where head movement exceeded 0.20mm
+rootMeanSquareFD        - Root mean square of framewise displacement, more sensitive to movement spikes
+FDquartile.top1.4thFD.  - Average movement in the top 25% most-motion frames
+PercentFD_greater_than_0.20 - Percentage of total frames with movement over 0.20mm
+MeanDVARS               - Measures signal intensity changes between frames, another motion artifact indicator
+MeanFD_Jenkinson        - Framewise displacement calculated using the Jenkinson formula, alternative to MeanFD
+site                    - Research site where participant was scanned (KKI, NYU, OHSU, Peking_1/2/3)
+sibling_id              - ID of a sibling also in the study, mostly empty
+data_set                - Whether participant is in training set or test set
+age                     - Participant age in years
+sex                     - Participant sex (M/F)
+handedness              - Dominant hand (R/L/ambidextrous)
+full_2_iq               - Full scale IQ score from 2-subtest short form
+full_4_iq               - Full scale IQ score from 4-subtest short form
+viq                     - Verbal IQ score
+piq                     - Performance IQ score
+iq_measure              - Which IQ test was administered
+tdc                     - Typically developing control, no ADHD (1 = yes)
+adhd                    - Has ADHD diagnosis (1 = yes)
+adhd_inattentive        - Inattentive subtype of ADHD (1 = yes)
+adhd_combined           - Combined subtype of ADHD, both inattentive and hyperactive (1 = yes)
+adhd_subthreshold       - Shows some ADHD symptoms but does not fully meet diagnostic criteria (1 = yes)
+diagnosis_using_cdis    - Written out diagnosis string, e.g. ADHD-I, ADHD-C, ODD
+notes                   - Any additional notes about the participant
+sess_1_anat_1           - Quality rating of session 1 anatomical scan 1 (pass/fail/questionable)
+sess_1_anat_2           - Quality rating of session 1 anatomical scan 2 (pass/fail/questionable)
+oppositional            - Conners oppositional behavior subscale score
+cog_inatt               - Conners cognitive inattention subscale score
+hyperac                 - Conners hyperactivity subscale score
+anxious_shy             - Conners anxious and shy behavior subscale score
+perfectionism           - Conners perfectionism subscale score
+social_problems         - Conners social problems subscale score
+psychosomatic           - Conners psychosomatic complaints subscale score
+conn_adhd               - Conners ADHD Index score, measures likelihood of ADHD diagnosis
+restless_impulsive      - Conners restless and impulsive behavior subscale score
+emot_lability           - Conners emotional lability subscale score, measures mood instability
+conn_gi_tot             - Conners Global Index Total, broader measure of overall behavioral and emotional problems
+dsm_iv_inatt            - DSM-IV inattention symptom count
+dsm_iv_h_i              - DSM-IV hyperactivity and impulsivity symptom count
+dsm_iv_tot              - Total DSM-IV ADHD symptom count
+study                   - Which sub-study within the ADHD200 project the participant belongs to
+sess_1_rest_1           - Quality rating of session 1 resting state scan 1 (pass/fail/questionable)
+sess_1_rest_1_eyes      - Whether eyes were open or closed during session 1 resting state scan 1
+sess_1_rest_2           - Quality rating of session 1 resting state scan 2 (pass/fail/questionable)
+sess_1_rest_2_eyes      - Whether eyes were open or closed during session 1 resting state scan 2
+sess_1_rest_3           - Quality rating of session 1 resting state scan 3 (pass/fail/questionable)
+sess_1_rest_3_eyes      - Whether eyes were open or closed during session 1 resting state scan 3
+sess_1_rest_4           - Quality rating of session 1 resting state scan 4 (pass/fail/questionable)
+sess_1_rest_4_eyes      - Whether eyes were open or closed during session 1 resting state scan 4
+sess_1_rest_5           - Quality rating of session 1 resting state scan 5 (pass/fail/questionable)
+sess_1_rest_5_eyes      - Whether eyes were open or closed during session 1 resting state scan 5
+sess_1_rest_6           - Quality rating of session 1 resting state scan 6 (pass/fail/questionable)
+sess_1_rest_6_eyes      - Whether eyes were open or closed during session 1 resting state scan 6
+sess_1_which_anat       - Which anatomical scan was used for preprocessing in session 1
+sess_2_rest_1           - Quality rating of session 2 resting state scan 1 (pass/fail/questionable)
+sess_2_rest_1_eyes      - Whether eyes were open or closed during session 2 resting state scan 1
+sess_2_rest_2           - Quality rating of session 2 resting state scan 2 (pass/fail/questionable)
+sess_2_rest_2_eyes      - Whether eyes were open or closed during session 2 resting state scan 2
+sess_2_anat_1           - Quality rating of session 2 anatomical scan 1 (pass/fail/questionable)
+defacing_ok             - Whether facial features were successfully removed for anonymization (yes/NaN)
+defacing_notes          - Any issues or notes about the defacing process
